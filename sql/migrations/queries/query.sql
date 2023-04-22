@@ -1,2 +1,2 @@
--- name: FindChatByID: one
-SELECT * FROM chats WHERE id ?;
+-- name: FindChatByID :one
+SELECT * FROM chats WHERE id = ?;
