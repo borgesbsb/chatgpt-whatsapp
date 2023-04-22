@@ -75,18 +75,18 @@ func (uc *ChatCompletionUseCase) Execute(ctx context.Context, input ChatCompleti
 		}
 	}
 
-	userManager := entity.NewUserManager("user", input.UserMessage, chat.Config.Model)
+	userMessage, err := entity.NewMessage("user", input.UserMessage, chat.Config.Model)
 	if err != nil {
 		return nil, errors.New("error creating user manager:" + err.Error())
 	}
 
-	err = chat.AddMessage(userManager.Message)
+	err = chat.AddMessage(userMessage)
 	if err != nil {
 		return nil, errors.New("error adding user message:" + err.Error())
 	}
 
 	messages := []openai.ChatCompletionMessage{}
-	for _, msg := range chat.Message {
+	for _, msg := range chat.Messages {
 		messages = append(messages, openai.ChatCompletionMessage{
 			Role:    msg.Role,
 			Content: msg.Content,
