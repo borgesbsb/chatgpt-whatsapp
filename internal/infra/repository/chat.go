@@ -47,6 +47,22 @@ func (r *ChatRepositoryMySql) CreateChat(ctx context.Context, chat *entity.Chat)
 		return err
 	}
 
+	err = r.Queries.AddMessage(
+		ctx,
+		db.AddMessageParams{
+			ID:        chat.InitialSystemMessage.ID,
+			ChatID:    chat.ID,
+			Content:   chat.InitialSystemMessage.Content,
+			Role:      chat.InitialSystemMessage.Role,
+			Tokens:    int32(chat.InitialSystemMessage.Tokens),
+			CreatedAt: chat.InitialSystemMessage.CreatedAt,
+		},
+	)
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 
 }
