@@ -142,6 +142,15 @@ func (uc *ChatCompletionUseCase) Execute(ctx context.Context, input ChatCompleti
 	}
 
 	err = uc.ChatGateway.SaveChat(ctx, chat)
+	if err != nil {
+		return nil, errors.New("error saving chat:" + err.Error())
+	}
+
+	return &ChatCompletionOutputDTO{
+		ChatId:  chat.ID,
+		UserId:  chat.UserId,
+		Content: fullResponse.String(),
+	}, nil
 
 }
 
